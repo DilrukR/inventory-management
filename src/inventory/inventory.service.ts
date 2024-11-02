@@ -87,4 +87,30 @@ export class InventoryService {
       .where('inventory.productName ILIKE :query', { query: `%${query}%` })
       .getMany();
   }
+
+  async getInventoryStatistics(): Promise<{
+    totalItemCount: number;
+    totalQuantity: number;
+    totalValue: number;
+    lowStockItems: InventoryUser[];
+  }> {
+    // Get total item count and total quantity and value
+    const items = await this.inventoryRepository.find();
+    const totalItemCount = items.length;
+    const totalQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
+    const totalValue = items.reduce(
+      (acc, item) => acc + item.quantity * item.price,
+      0,
+    );
+
+    // Find items with quantity less than 5
+    const lowStockItems = items.filter((item) => item.quantity < 5);
+
+    return {
+      totalItemCount,
+      totalQuantity,
+      totalValue,
+      lowStockItems,
+    };
+  }
 }

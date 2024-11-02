@@ -42,6 +42,12 @@ export class InventoryController {
     return this.inventoryService.getById(id);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('statistics')
+  async getInventoryStatistics() {
+    return this.inventoryService.getInventoryStatistics();
+  }
+
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<{ message: string }> {
     return this.inventoryService.remove(id);

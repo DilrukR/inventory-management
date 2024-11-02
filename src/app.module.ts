@@ -6,9 +6,11 @@ import { InventoryModule } from './inventory/inventory.module';
 import { DbModule } from './db/db.module';
 import { UsersModule } from './users/users.module';
 import { OrdersModule } from './orders/orders.module';
+import { SuppliersModule } from './suppliers/suppliers.module';
+import { SupplierInventoryModule } from './supplier-inventory/supplier-inventory.module';
 
 @Module({
-  imports: [AuthModule, InventoryModule, DbModule, UsersModule, OrdersModule],
+  imports: [AuthModule, InventoryModule, DbModule, UsersModule, OrdersModule, SuppliersModule, SupplierInventoryModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,10 +1,17 @@
-import { IsDecimal } from 'class-validator';
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Generated,
+} from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
-@Entity('inventory_user')
-export class InventoryUser {
+@Entity('supplier_inventory')
+export class SupplierInventory {
   @PrimaryColumn()
+  @Generated('uuid')
   id: string;
 
   @Column()
@@ -17,7 +24,6 @@ export class InventoryUser {
   quantity: number;
 
   @Column()
-  @IsDecimal()
   price: number;
 
   @Column()
@@ -32,20 +38,11 @@ export class InventoryUser {
   @Column()
   image: string;
 
-  @Column()
+  @CreateDateColumn()
   createdDate: Date;
 
-  @Column()
+  @UpdateDateColumn()
   updatedDate: Date;
-
-  @Column()
-  supplier: string;
-
-  @Column()
-  supplierId: number;
-
-  @Column()
-  isUser: string;
 
   constructor() {
     this.id = uuidv4();
