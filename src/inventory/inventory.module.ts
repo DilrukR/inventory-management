@@ -8,5 +8,6 @@ import { InventoryUser } from 'src/db/Entities/inventory.entitiy';
   imports: [TypeOrmModule.forFeature([InventoryUser])],
   providers: [InventoryService],
   controllers: [InventoryController],
+  exports: [InventoryService, TypeOrmModule],
 })
 export class InventoryModule {}
