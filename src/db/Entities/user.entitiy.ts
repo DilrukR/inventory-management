@@ -29,4 +29,7 @@ export class User {
 
   @Column()
   role: string;
+
+  @Column({ nullable: true })
+  deviceToken: string;
 }

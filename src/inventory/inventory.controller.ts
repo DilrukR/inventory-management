@@ -7,11 +7,14 @@ import {
   UseGuards,
   Delete,
   Param,
+  ParseUUIDPipe,
+  Patch,
 } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
 import { CreateInventoryUserDto } from './dto/createInventory.dto';
 import { JwtAuthGuard } from 'src/auth/JwT/jwt-auth.guard';
 import { InventoryUser } from 'src/db/Entities/inventory.entitiy';
+import { UpdateInventoryUserDto } from './dto/updateInventory.dto';
 
 @Controller('user-inventory')
 export class InventoryController {
@@ -46,6 +49,14 @@ export class InventoryController {
   @Get('statistics')
   async getInventoryStatistics() {
     return this.inventoryService.getInventoryStatistics();
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateInventoryUserDto: UpdateInventoryUserDto,
+  ) {
+    return this.inventoryService.update(id, updateInventoryUserDto);
   }
 
   @Delete(':id')

@@ -15,11 +15,9 @@ export class OrdersService {
     private inventoryRepository: Repository<InventoryUser>,
   ) {}
 
-  // Create a new order
   async createOrder(
     createOrderDto: CreateOrderDto,
   ): Promise<{ order: Orders; message: string }> {
-    // Validate user existence
     const user = await this.userRepository.findOne({
       where: { id: createOrderDto.user_Id },
     });
@@ -29,7 +27,6 @@ export class OrdersService {
       );
     }
 
-    // Validate product existence
     const product = await this.inventoryRepository.findOne({
       where: { id: createOrderDto.product_Id },
     });
@@ -39,11 +36,10 @@ export class OrdersService {
       );
     }
 
-    // Create and save the order
     const order = this.ordersRepository.create({
       ...createOrderDto,
-      user, // Attach user entity
-      product, // Attach product entity
+      user,
+      product,
     });
     await this.ordersRepository.save(order);
 
@@ -53,7 +49,7 @@ export class OrdersService {
     };
   }
 
-  // Get all orders with pagination
+
   async getAllOrders(
     page: number = 1,
     limit: number = 10,
