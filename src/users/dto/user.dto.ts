@@ -6,4 +6,5 @@ export class createUserDto {
   phone: string;
   address: string;
   role: string;
+  deviceToken: string;
 }

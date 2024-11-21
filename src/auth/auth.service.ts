@@ -12,7 +12,6 @@ export class AuthService {
   ) {}
 
   async login(authDto: AuthDto): Promise<any> {
-    console.log('FIREBASE_CREDENTIALS:', process.env.FIREBASE_CREDENTIALS);
     const user = await this.usersService.findUserByEmail(authDto.email);
 
     console.log(user);
