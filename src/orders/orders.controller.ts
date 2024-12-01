@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Delete } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/createOrder.dto';
 
@@ -14,5 +14,33 @@ export class OrdersController {
   @Get('all-orders')
   getAllOrders() {
     return this.ordersService.getAllOrders();
+  }
+
+  @Get('get-order-by-id/:id')
+  getOrderById(@Param('id') id: string) {
+    return this.ordersService.getOrderById(id);
+  }
+
+  @Get('get-order-by-user-id/:userId')
+  getOrderByUserId(@Param('userId') userId: number) {
+    return this.ordersService.getOrderByUserId(userId);
+  }
+
+  @Delete('delete-order/:id')
+  deleteOrder(@Param('id') id: string) {
+    return this.ordersService.deleteOrder(id);
+  }
+
+  @Post('update-order/:id')
+  updateOrder(@Param('id') id: string, @Body() updateOrderDto: CreateOrderDto) {
+    return this.ordersService.updateOrder(id, updateOrderDto);
+  }
+
+  @Get('get-order-by-status/:status/:userId')
+  getOrderByStatus(
+    @Param('status') status: string,
+    @Param('userId') userId: number,
+  ) {
+    return this.ordersService.getorderbystatus(status, userId);
   }
 }

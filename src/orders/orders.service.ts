@@ -49,7 +49,6 @@ export class OrdersService {
     };
   }
 
-
   async getAllOrders(
     page: number = 1,
     limit: number = 10,
@@ -71,5 +70,64 @@ export class OrdersService {
       total,
       page,
     };
+  }
+
+  async getOrderById(id: string): Promise<Orders> {
+    const order = await this.ordersRepository.findOne({
+      where: { order_Id: id },
+      relations: ['user', 'product'],
+    });
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${id} not found`);
+    }
+    return order;
+  }
+
+  async getOrderByUserId(userId: number): Promise<Orders[]> {
+    const orders = await this.ordersRepository.find({
+      where: { user_Id: userId },
+      relations: ['user', 'product'],
+    });
+    return orders;
+  }
+
+  async deleteOrder(id: string): Promise<{ message: string }> {
+    const order = await this.ordersRepository.findOne({
+      where: { order_Id: id },
+    });
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${id} not found`);
+    }
+    await this.ordersRepository.delete(id);
+    return {
+      message: 'Order deleted successfully',
+    };
+  }
+
+  async updateOrder(
+    id: string,
+    updateOrderDto: CreateOrderDto,
+  ): Promise<{ message: string }> {
+    const order = await this.ordersRepository.findOne({
+      where: { order_Id: id },
+    });
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${id} not found`);
+    }
+    await this.ordersRepository.update(id, updateOrderDto);
+    return {
+      message: 'Order updated successfully',
+    };
+  }
+
+  async getorderbystatus(status: string, userId: number): Promise<Orders[]> {
+    const orders = await this.ordersRepository.find({
+      where: {
+        status: status,
+        user_Id: userId,
+      },
+      relations: ['user', 'product'],
+    });
+    return orders;
   }
 }
