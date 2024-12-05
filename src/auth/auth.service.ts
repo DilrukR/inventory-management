@@ -1,12 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
+import { SuppliersService } from 'src/suppliers/suppliers.service';
 import * as bcrypt from 'bcryptjs';
 import { AuthDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly suppliersService: SuppliersService,
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
@@ -15,6 +17,33 @@ export class AuthService {
     const user = await this.usersService.findUserByEmail(authDto.email);
 
     console.log(user);
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid Email');
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      authDto.password,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid Password');
+    }
+
+    const accessToken = this.generateAccessToken(user);
+
+    const refreshToken = this.generateRefreshToken(user);
+
+    return {
+      message: 'Login successful',
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  async supplierLogin(authDto: AuthDto): Promise<any> {
+    const user = await this.suppliersService.findbyEmail(authDto.email);
 
     if (!user) {
       throw new UnauthorizedException('Invalid Email');

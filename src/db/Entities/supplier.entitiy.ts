@@ -24,6 +24,9 @@ export class Supplier {
   email: string;
 
   @Column()
+  password: string;
+
+  @Column()
   phone: string;
 
   @Column()
@@ -37,6 +40,9 @@ export class Supplier {
 
   @UpdateDateColumn()
   updatedDate: Date;
+
+  @Column()
+  deviceToken: string;
 
   constructor() {
     this.id = uuidv4();

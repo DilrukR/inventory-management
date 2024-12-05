@@ -63,8 +63,8 @@ export class UpdateInventoryUserDto {
   supplier?: string;
 
   @IsOptional()
-  @IsNumber()
-  supplierId?: number;
+  @IsString()
+  supplierId?: string;
 
   @IsOptional()
   @IsString()

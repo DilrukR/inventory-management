@@ -17,4 +17,10 @@ export class AuthController {
   async refreshToken(@Body('refreshToken') refreshToken: string) {
     return this.authService.refreshToken(refreshToken);
   }
+
+  @Post('supplier-login')
+  @HttpCode(200)
+  async supplierLogin(@Body() authDto: AuthDto) {
+    return this.authService.supplierLogin(authDto);
+  }
 }

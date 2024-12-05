@@ -1,7 +1,7 @@
 import { IsDecimal } from 'class-validator';
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, OneToOne } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-
+import { Supplier } from './supplier.entitiy';
 @Entity('inventory_user')
 export class InventoryUser {
   @PrimaryColumn()
@@ -42,7 +42,7 @@ export class InventoryUser {
   supplier: string;
 
   @Column()
-  supplierId: number;
+  supplierId: string;
 
   @Column()
   isUser: string;

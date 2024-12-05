@@ -10,6 +10,6 @@ export class CreateInventoryUserDto {
   createdDate: Date;
   updatedDate: Date;
   supplier: string;
-  supplierId: number;
+  supplierId: string;
   isUser: string;
 }
