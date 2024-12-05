@@ -10,12 +10,15 @@ import { Repository } from 'typeorm';
 import { CreateInventoryUserDto } from './dto/createInventory.dto';
 import { UpdateInventoryUserDto } from './dto/updateInventory.dto';
 import { NotificationsService } from 'src/notifications/notifications.service';
+import { SuppliersService } from 'src/suppliers/suppliers.service';
 
 @Injectable()
 export class InventoryService {
   constructor(
     @InjectRepository(InventoryUser)
     private inventoryRepository: Repository<InventoryUser>,
+    private notificationsService: NotificationsService,
+    private suppliersService: SuppliersService,
   ) {}
 
   /**
@@ -94,10 +97,20 @@ export class InventoryService {
     const updatedItem = Object.assign(inventoryItem, updateInventoryUserDto);
     const savedItem = await this.inventoryRepository.save(updatedItem);
 
+    const deviceToken = await this.suppliersService.getById(
+      savedItem.supplierId,
+    );
+
+    if (!deviceToken) {
+      throw new NotFoundException(
+        `Supplier with ID ${savedItem.supplierId} not found`,
+      );
+    }
+
     if (savedItem.quantity < 5) {
       const notificationService = new NotificationsService();
       await notificationService.sendPushNotification(
-        `drZ9hwa-Szi59hjSWkZH_k:APA91bEwAeL5sQfBnENlkcjp5xqahZXqpvwW9fJqpbrvacsV10y56o7vM3fdxIMFhl_37cPqjkZC1Fjmj4DiScSnleOAsb2u3P7WrizLMSHuQkMVaQvAPGA`,
+        deviceToken.data.deviceToken,
         'Low Stock Alert',
         `Product '${savedItem.productName}' is running low in stock`,
       );

@@ -43,4 +43,9 @@ export class OrdersController {
   ) {
     return this.ordersService.getorderbystatus(status, userId);
   }
+
+  @Get('get-order-by-supplier-id/:supplierId')
+  getOrderBySupplierId(@Param('supplierId') supplierId: string) {
+    return this.ordersService.getOrderBySupplierId(supplierId);
+  }
 }

@@ -120,6 +120,17 @@ export class OrdersService {
     };
   }
 
+  getOrderBySupplierId(supplierId: string): Promise<Orders[]> {
+    return this.ordersRepository.find({
+      where: {
+        product: {
+          supplierId: supplierId, // Filter by supplierId in the related product entity
+        },
+      },
+      relations: ['user', 'product'], // Include relations to 'user' and 'product'
+    });
+  }
+
   async getorderbystatus(status: string, userId: number): Promise<Orders[]> {
     const orders = await this.ordersRepository.find({
       where: {
